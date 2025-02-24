@@ -1,0 +1,179 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Stats</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 80%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .input-section {
+      margin-bottom: 20px;
+    }
+
+    .input-section label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-section input[type="date"] {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .input-section button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .input-section button:hover {
+      background-color: #0056b3;
+    }
+
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-card {
+      background-color: #e9ecef;
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .stat-card h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+    }
+
+    .stat-card p {
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Life Stats</h1>
+    <div class="input-section">
+      <label for="birthdate">Enter your birthdate:</label>
+      <input type="date" id="birthdate">
+      <button id="calculate">Calculate</button>
+    </div>
+    <div class="stats-section">
+      <div class="stat-card">
+        <h2>Age</h2>
+        <p id="age">0 years</p>
+      </div>
+      <div class="stat-card">
+        <h2>Days Lived</h2>
+        <p id="daysLived">0 days</p>
+      </div>
+      <div class="stat-card">
+        <h2>Weeks Lived</h2>
+        <p id="weeksLived">0 weeks</p>
+      </div>
+      <div class="stat-card">
+        <h2>Months Lived</h2>
+        <p id="monthsLived">0 months</p>
+      </div>
+      <div class="stat-card">
+        <h2>Years Lived (Fractional)</h2>
+        <p id="yearsLived">0.00 years</p>
+      </div>
+      <div class="stat-card">
+        <h2>Seconds Lived</h2>
+        <p id="secondsLived">0 seconds</p>
+      </div>
+      <div class="stat-card">
+        <h2>Heart Beats (Approx.)</h2>
+        <p id="heartBeats">0</p>
+      </div>
+      <div class="stat-card">
+        <h2>Breaths Taken (Approx.)</h2>
+        <p id="breathsTaken">0</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const birthdateInput = document.getElementById('birthdate');
+      const calculateButton = document.getElementById('calculate');
+      const ageDisplay = document.getElementById('age');
+      const daysLivedDisplay = document.getElementById('daysLived');
+      const weeksLivedDisplay = document.getElementById('weeksLived');
+      const monthsLivedDisplay = document.getElementById('monthsLived');
+      const yearsLivedDisplay = document.getElementById('yearsLived');
+      const secondsLivedDisplay = document.getElementById('secondsLived');
+      const heartBeatsDisplay = document.getElementById('heartBeats');
+      const breathsTakenDisplay = document.getElementById('breathsTaken');
+
+      calculateButton.addEventListener('click', () => {
+        const birthdate = new Date(birthdateInput.value);
+        const now = new Date();
+
+        if (isNaN(birthdate.getTime())) {
+          alert('Please enter a valid birthdate.');
+          return;
+        }
+
+        const ageInYears = now.getFullYear() - birthdate.getFullYear();
+        const ageInMonths = now.getMonth() - birthdate.getMonth();
+
+        if (ageInMonths < 0 || (ageInMonths === 0 && now.getDate() < birthdate.getDate())) {
+          ageDisplay.textContent = (ageInYears - 1) + " years";
+        } else {
+          ageDisplay.textContent = ageInYears + " years";
+        }
+
+        const daysLived = Math.floor((now - birthdate) / (1000 * 60 * 60 * 24));
+        daysLivedDisplay.textContent = daysLived + " days";
+
+        const weeksLived = Math.floor(daysLived / 7);
+        weeksLivedDisplay.textContent = weeksLived + " weeks";
+
+        const monthsLived = Math.floor((now.getFullYear() - birthdate.getFullYear()) * 12 + (now.getMonth() - birthdate.getMonth()));
+        monthsLivedDisplay.textContent = monthsLived + " months";
+
+        const yearsLivedFractional = (now - birthdate) / (1000 * 60 * 60 * 24 * 365.25);
+        yearsLivedDisplay.textContent = yearsLivedFractional.toFixed(2) + " years";
+
+        const secondsLived = Math.floor((now - birthdate) / 1000);
+        secondsLivedDisplay.textContent = secondsLived + " seconds";
+
+        const avgHeartRate = 72; // Average resting heart rate
+        const heartBeats = Math.floor(secondsLived * avgHeartRate);
+        heartBeatsDisplay.textContent = heartBeats.toLocaleString();
+
+        const avgBreathRate = 16; // Average breaths per minute
+        const breathsTaken = Math.floor(secondsLived / 60 * avgBreathRate);
+        breathsTakenDisplay.textContent = breathsTaken.toLocaleString();
+      });
+    });
+  </script>
+</body>
+</html>
