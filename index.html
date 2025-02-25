@@ -165,7 +165,7 @@
         const secondsLived = Math.floor((now - birthdate) / 1000);
         secondsLivedDisplay.textContent = secondsLived + " seconds";
 
-        const avgHeartRate = 72; // Average resting heart rate
+        const avgHeartRate = 7.2; // Average resting heart rate
         const heartBeats = Math.floor(secondsLived * avgHeartRate);
         heartBeatsDisplay.textContent = heartBeats.toLocaleString();
 
